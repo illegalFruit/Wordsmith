@@ -1,0 +1,586 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://Fonts/8bitOperatorPlus8-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scene/WordBtn.tscn" type="PackedScene" id=2]
+
+[sub_resource type="GDScript" id=10]
+script/source = "extends Control
+
+func _ready():
+	if get_tree().is_network_server():
+		Game.StartGame()
+"
+
+[sub_resource type="StyleBoxFlat" id=19]
+bg_color = Color( 0.705882, 0.180392, 0.180392, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.964706, 0.772549, 0.505882, 1 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 82
+outline_size = 1
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.313726, 0.145098, 0.145098, 1 )
+draw_center = false
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="GDScript" id=20]
+script/source = "extends Label
+
+func _ready():
+	pass 
+
+func _process(delta):
+	var time_left = str(Game.timer.time_left).split(\".\", true, 1)
+	self.text = time_left[0]
+"
+
+[sub_resource type="DynamicFont" id=3]
+size = 72
+outline_size = 1
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.607843, 0.607843, 0.607843, 1 )
+draw_center = false
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.607843, 0.607843, 0.607843, 1 )
+draw_center = false
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 42
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+draw_center = false
+border_color = Color( 0, 0, 0, 1 )
+shadow_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=23]
+bg_color = Color( 1, 0.890196, 0.403922, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 0.760784, 0.0313726, 1 )
+shadow_color = Color( 0, 0, 0, 0.780392 )
+shadow_size = 1
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 1, 0.92549, 0.588235, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 0.760784, 0.0313726, 1 )
+shadow_color = Color( 0, 0, 0, 0.780392 )
+shadow_size = 1
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+draw_center = false
+border_color = Color( 0, 0, 0, 1 )
+shadow_color = Color( 0, 0, 0, 0.490196 )
+shadow_size = 3
+
+[sub_resource type="GDScript" id=25]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"pressed\")
+	if !get_tree().is_network_server():
+		self.visible = false
+
+func pressed():
+	Game.rpc(\"EndGame\")
+	Game.StartGame()
+"
+
+[sub_resource type="GDScript" id=21]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"pressed\")
+	if !get_tree().is_network_server():
+		self.visible = false
+
+func pressed():
+	Game.rpc(\"EndGame\")
+"
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_size = 2
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="GDScript" id=13]
+script/source = "extends Panel
+
+func _ready():
+	connect(\"mouse_entered\", self, \"on_mouse_entered\")
+	connect(\"mouse_exited\", self, \"on_mouse_exited\")
+
+func on_mouse_entered():
+	self.modulate = Color(\"#ffffff\")
+
+func on_mouse_exited():
+	self.modulate = Color(\"#25ffffff\")
+
+func InputEntered(_ignore):
+	var hint = get_node(\"Input2\").text
+	var guess = get_node(\"Input1\").text
+	Game.rpc(\"SetHintAndGuess\", {\"hint\": hint, 
+								\"guess\": guess})
+	self.get_parent().visible = false
+
+"
+
+[sub_resource type="DynamicFont" id=16]
+size = 28
+outline_size = 2
+outline_color = Color( 0.87451, 0.764706, 0.988235, 0.596078 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.219608, 0.168627, 0.239216, 1 )
+
+[sub_resource type="GDScript" id=14]
+script/source = "extends LineEdit
+
+func _ready():
+	connect(\"text_entered\", self.get_parent(), \"InputEntered\")
+"
+
+[sub_resource type="StyleBoxFlat" id=18]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.219608, 0.168627, 0.239216, 1 )
+
+[sub_resource type="GDScript" id=15]
+script/source = "extends LineEdit
+
+func _ready():
+	connect(\"text_entered\", self.get_parent(), \"InputEntered\")
+"
+
+[sub_resource type="Environment" id=6]
+background_mode = 4
+glow_enabled = true
+glow_intensity = 0.15
+glow_hdr_scale = 0.0
+glow_bicubic_upscale = true
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 10 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TopPanel" type="Panel" parent="."]
+anchor_right = 1.0
+margin_right = -610.0
+margin_bottom = 724.0
+custom_styles/panel = SubResource( 19 )
+
+[node name="BotPanel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -959.625
+margin_top = -152.625
+margin_right = -1.625
+margin_bottom = -0.625
+custom_styles/panel = SubResource( 8 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1229.0
+margin_bottom = 619.0
+
+[node name="GridContainer" type="GridContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+columns = 5
+
+[node name="Button" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 242.0
+margin_bottom = 120.0
+
+[node name="Button2" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 246.0
+margin_right = 488.0
+margin_bottom = 120.0
+
+[node name="Button3" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 492.0
+margin_right = 734.0
+margin_bottom = 120.0
+
+[node name="Button4" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 738.0
+margin_right = 980.0
+margin_bottom = 120.0
+
+[node name="Button5" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 984.0
+margin_right = 1226.0
+margin_bottom = 120.0
+
+[node name="Button6" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 124.0
+margin_right = 242.0
+margin_bottom = 244.0
+
+[node name="Button7" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 246.0
+margin_top = 124.0
+margin_right = 488.0
+margin_bottom = 244.0
+
+[node name="Button8" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 492.0
+margin_top = 124.0
+margin_right = 734.0
+margin_bottom = 244.0
+
+[node name="Button9" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 738.0
+margin_top = 124.0
+margin_right = 980.0
+margin_bottom = 244.0
+
+[node name="Button10" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 984.0
+margin_top = 124.0
+margin_right = 1226.0
+margin_bottom = 244.0
+
+[node name="Button11" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 248.0
+margin_right = 242.0
+margin_bottom = 368.0
+
+[node name="Button12" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 246.0
+margin_top = 248.0
+margin_right = 488.0
+margin_bottom = 368.0
+
+[node name="Button13" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 492.0
+margin_top = 248.0
+margin_right = 734.0
+margin_bottom = 368.0
+
+[node name="Button14" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 738.0
+margin_top = 248.0
+margin_right = 980.0
+margin_bottom = 368.0
+
+[node name="Button15" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 984.0
+margin_top = 248.0
+margin_right = 1226.0
+margin_bottom = 368.0
+
+[node name="Button16" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 372.0
+margin_right = 242.0
+margin_bottom = 492.0
+
+[node name="Button17" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 246.0
+margin_top = 372.0
+margin_right = 488.0
+margin_bottom = 492.0
+
+[node name="Button18" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 492.0
+margin_top = 372.0
+margin_right = 734.0
+margin_bottom = 492.0
+
+[node name="Button19" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 738.0
+margin_top = 372.0
+margin_right = 980.0
+margin_bottom = 492.0
+
+[node name="Button20" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 984.0
+margin_top = 372.0
+margin_right = 1226.0
+margin_bottom = 492.0
+
+[node name="Button21" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 496.0
+margin_right = 242.0
+margin_bottom = 616.0
+
+[node name="Button22" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 246.0
+margin_top = 496.0
+margin_right = 488.0
+margin_bottom = 616.0
+
+[node name="Button23" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 492.0
+margin_top = 496.0
+margin_right = 734.0
+margin_bottom = 616.0
+
+[node name="Button24" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 738.0
+margin_top = 496.0
+margin_right = 980.0
+margin_bottom = 616.0
+
+[node name="Button25" parent="Panel/GridContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 984.0
+margin_top = 496.0
+margin_right = 1226.0
+margin_bottom = 616.0
+
+[node name="TimeRemaining" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 51.589
+margin_top = -78.8884
+margin_right = 272.589
+margin_bottom = -18.8884
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.486275 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
+text = "00:00"
+script = SubResource( 20 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -302.0
+margin_top = -73.0
+margin_right = 174.0
+margin_bottom = -20.0
+custom_constants/separation = 20
+
+[node name="GuessNum" type="Label" parent="HBoxContainer"]
+margin_right = 45.0
+margin_bottom = 53.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.486275 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+text = "0"
+
+[node name="HintWord" type="Label" parent="HBoxContainer"]
+margin_left = 65.0
+margin_right = 473.0
+margin_bottom = 53.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.486275 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 3 )
+custom_styles/normal = SubResource( 5 )
+text = "SomeGuess"
+
+[node name="WhosTurn" type="Label" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = 258.0
+margin_right = 617.0
+margin_bottom = 307.0
+rect_rotation = -89.961
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.623529 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = -2
+custom_fonts/font = SubResource( 9 )
+custom_styles/normal = SubResource( 11 )
+text = "R e d S p y  T u r n"
+align = 1
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -171.263
+margin_top = -25.071
+margin_right = -6.26294
+margin_bottom = -5.07098
+rect_min_size = Vector2( 165, 20 )
+custom_constants/separation = 22
+
+[node name="Button2" type="Button" parent="HBoxContainer2"]
+margin_right = 71.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_styles/hover = SubResource( 23 )
+custom_styles/pressed = SubResource( 24 )
+custom_styles/normal = SubResource( 22 )
+text = "Restart"
+script = SubResource( 25 )
+
+[node name="Button" type="Button" parent="HBoxContainer2"]
+margin_left = 93.0
+margin_right = 165.0
+margin_bottom = 20.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_styles/hover = SubResource( 23 )
+custom_styles/pressed = SubResource( 24 )
+custom_styles/normal = SubResource( 22 )
+text = "End Game"
+script = SubResource( 21 )
+
+[node name="Popup" type="Popup" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -720.0
+margin_right = 1280.0
+
+[node name="Panel" type="Panel" parent="Popup"]
+modulate = Color( 1, 1, 1, 0.196078 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -163.0
+margin_top = -109.0
+margin_right = 164.0
+margin_bottom = 31.0
+custom_styles/panel = SubResource( 12 )
+script = SubResource( 13 )
+
+[node name="Label" type="Label" parent="Popup/Panel"]
+margin_left = 7.0
+margin_top = 6.4054
+margin_right = 221.0
+margin_bottom = 24.4054
+mouse_filter = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 16 )
+text = "Wordsmith Panel:"
+
+[node name="Input1" type="LineEdit" parent="Popup/Panel"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -35.5
+margin_bottom = 6.5
+mouse_filter = 1
+custom_styles/focus = SubResource( 17 )
+align = 1
+max_length = 1
+placeholder_text = "# of Guesses"
+script = SubResource( 14 )
+
+[node name="Input2" type="LineEdit" parent="Popup/Panel"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 17.5
+margin_bottom = 59.5
+mouse_filter = 1
+custom_styles/focus = SubResource( 18 )
+align = 1
+placeholder_text = "Word Hint"
+script = SubResource( 15 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 6 )

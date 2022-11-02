@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Button
+
+export var team : String
+onready var lbl = get_node(\"Label\")
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+	connect(\"pressed\", self, \"Clicked\")
+
+func Clicked():
+	Game.rpc(\"WordGuessed\", [{\"id\":get_tree().get_network_unique_id(),
+							\"word\":get_node(\"Label\").text}])
+
+func GlowOn():
+	if (self.has_stylebox(\"GreyTheme\", \"Button\") 
+	and self.disabled == false):
+		lbl.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	if (self.has_stylebox(\"GreyTheme\", \"Button\") 
+	and self.disabled == false):
+		lbl.modulate = Color(1.0, 1.0, 1.0, 1)
+
+"
+
+[node name="Panel" type="Panel"]
+anchor_right = 0.172
+anchor_bottom = 0.167
+margin_right = -0.160004
+margin_bottom = -0.240005
+rect_min_size = Vector2( 140, 80 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 2 )
+
+[node name="Panel" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Button" type="Button" parent="Panel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 216.0
+margin_bottom = 115.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
+script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="Panel/Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "doggy"
+align = 1
+valign = 1
+autowrap = true

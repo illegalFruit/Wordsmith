@@ -1,0 +1,109 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scene/SubMenu1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scene/SubMenu2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Fonts/8bitFont.tres" type="DynamicFont" id=3]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Control
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	print(get_tree().current_scene.filename)
+"
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var host_button = null
+var join_button = null
+var quit_button = null
+var sub_menu2 = null
+
+
+func _ready():
+	host_button = self.find_node(\"Host\")
+	join_button = self.find_node(\"Join\")
+	sub_menu2 = get_node(\"../SubMenu2\")
+	host_button.connect(\"pressed\", self, \"on_host_btn\")
+	join_button.connect(\"pressed\", self, \"on_join_btn\")
+
+func on_host_btn():
+	get_tree().change_scene(\"res://Scene/GameView.tscn\")
+	Network.create_host()
+
+func on_join_btn():
+	# Move This sub menu out of scene and the other into scene
+	var new_pos = Vector2(1645, 382)
+	self.set_position(new_pos)
+	new_pos = Vector2(645, 382)
+	sub_menu2.set_position(new_pos)
+"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control
+
+var back_button = null
+var code_input = null
+var sub_menu1 = null
+
+
+func _ready():
+	back_button = self.find_node(\"BackButton\")
+	code_input = self.find_node(\"LineEdit\")
+	sub_menu1 = get_node(\"../SubMenu1\")
+	back_button.connect(\"pressed\", self, \"on_back_btn\")
+	code_input.connect(\"text_entered\", self, \"on_code_enter\")
+
+func on_back_btn():
+	var new_pos = Vector2(1645, 382)
+	self.set_position(new_pos)
+	new_pos = Vector2(645, 382)
+	sub_menu1.set_position(new_pos)
+
+func on_code_enter(input_text):
+	get_tree().change_scene(\"res://Scene/GameView.tscn\")
+	Network.create_client()
+"
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 478.388, 283.076 )
+script = SubResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 33.8978
+margin_top = 50.3559
+margin_right = 1279.9
+margin_bottom = 198.356
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 3 )
+text = "Wordsmith! "
+
+[node name="SubMenu1" parent="." instance=ExtResource( 1 )]
+margin_left = 645.0
+margin_top = 382.0
+margin_right = -125.0
+margin_bottom = -50.9998
+script = SubResource( 1 )
+
+[node name="SubMenu2" parent="." instance=ExtResource( 2 )]
+margin_left = 2217.95
+margin_top = 398.045
+margin_right = 1447.95
+margin_bottom = -34.9544
+script = SubResource( 2 )

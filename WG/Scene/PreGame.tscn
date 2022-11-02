@@ -1,0 +1,799 @@
+[gd_scene load_steps=51 format=2]
+
+[ext_resource path="res://Fonts/8bitOperatorPlus8-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scene/PlyerCard_B.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scene/PlyerCard_R.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scene/SpectatorCard.tscn" type="PackedScene" id=4]
+
+[sub_resource type="GDScript" id=52]
+script/source = "extends Control
+
+func _ready():
+	# Added yourself so now we need to call a team draw to show ourself
+	Game.RedrawTeams()
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 34
+outline_size = 2
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.31, 0.41, 1.05, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.313726, 0.411765, 1, 1 )
+shadow_color = Color( 0.509804, 0.509804, 0.509804, 0.6 )
+
+[sub_resource type="GDScript" id=53]
+script/source = "extends Button
+
+func _ready(): # {id:12345, team:RedSpy}
+	connect(\"pressed\", self, \"ButtonPress\")
+
+func ButtonPress():
+	Game.TrySwitchTeam({\"id\": get_tree().get_network_unique_id(),
+						\"team\": \"BluSpy\"})
+"
+
+[sub_resource type="DynamicFont" id=4]
+size = 34
+outline_size = 1
+outline_color = Color( 0.407843, 0.490196, 1, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=57]
+script/source = "extends Label
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+
+func GlowOn():
+	self.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	self.modulate = Color(1.1, 1.1, 1.1, 1.1)
+	
+"
+
+[sub_resource type="GDScript" id=54]
+script/source = "extends Button
+
+func _ready(): # {id:12345, team:RedSpy}
+	connect(\"pressed\", self, \"ButtonPress\")
+
+func ButtonPress():
+	Game.TrySwitchTeam({\"id\": get_tree().get_network_unique_id(),
+						\"team\": \"BluTeam\"})
+"
+
+[sub_resource type="GDScript" id=58]
+script/source = "extends Label
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+
+func GlowOn():
+	self.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	self.modulate = Color(1.1, 1.1, 1.1, 1.1)
+	
+"
+
+[sub_resource type="DynamicFont" id=7]
+size = 34
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 1, 0.239216, 0.239216, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=22]
+
+[sub_resource type="StyleBoxEmpty" id=23]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.956863, 0.243137, 0.243137, 1 )
+
+[sub_resource type="GDScript" id=55]
+script/source = "extends Button
+
+func _ready(): # {id:12345, team:RedSpy}
+	connect(\"pressed\", self, \"ButtonPress\")
+
+func ButtonPress():
+	Game.TrySwitchTeam({\"id\": get_tree().get_network_unique_id(),
+						\"team\": \"RedSpy\"})
+"
+
+[sub_resource type="DynamicFont" id=20]
+size = 34
+outline_size = 1
+outline_color = Color( 1, 0.45098, 0.45098, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=59]
+script/source = "extends Label
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+
+func GlowOn():
+	self.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	self.modulate = Color(1.1, 1.1, 1.1, 1.1)
+	
+"
+
+[sub_resource type="DynamicFont" id=9]
+size = 34
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=25]
+bg_color = Color( 1, 0.239216, 0.239216, 1 )
+
+[sub_resource type="StyleBoxFlat" id=26]
+bg_color = Color( 1, 0.239216, 0.239216, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=27]
+
+[sub_resource type="StyleBoxEmpty" id=28]
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.956863, 0.243137, 0.243137, 1 )
+
+[sub_resource type="GDScript" id=56]
+script/source = "extends Button
+
+func _ready(): # {id:12345, team:RedSpy}
+	connect(\"pressed\", self, \"ButtonPress\")
+
+func ButtonPress():
+	Game.TrySwitchTeam({\"id\": get_tree().get_network_unique_id(),
+						\"team\": \"RedTeam\"})
+"
+
+[sub_resource type="DynamicFont" id=21]
+size = 34
+outline_size = 1
+outline_color = Color( 1, 0.45098, 0.45098, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=60]
+script/source = "extends Label
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+
+func GlowOn():
+	self.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	self.modulate = Color(1.1, 1.1, 1.1, 1.1)
+	
+"
+
+[sub_resource type="StyleBoxFlat" id=43]
+bg_color = Color( 0.356863, 0.356863, 0.356863, 1 )
+border_width_top = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=44]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+border_width_top = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=37]
+
+[sub_resource type="StyleBoxEmpty" id=38]
+
+[sub_resource type="StyleBoxFlat" id=45]
+bg_color = Color( 0.356863, 0.356863, 0.356863, 1 )
+border_width_top = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="GDScript" id=42]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"ButtonPress\")
+	connect(\"mouse_entered\", self, \"LightenFont\")
+	connect(\"mouse_exited\", self, \"DarkenFont\")
+
+func LightenFont():
+	get_node(\"SpecLabel\").add_color_override(\"font_color\", Color(0.714, 0.714, 0.714))
+
+func DarkenFont():
+	get_node(\"SpecLabel\").add_color_override(\"font_color\", Color(0.415, 0.407, 0.407))
+
+func ButtonPress():
+	Game.TrySwitchTeam({\"id\": get_tree().get_network_unique_id(),
+						\"team\": \"Spectator\"})
+"
+
+[sub_resource type="DynamicFont" id=40]
+size = 28
+outline_size = 1
+outline_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+use_mipmaps = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=41]
+draw_center = false
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="GDScript" id=61]
+script/source = "extends Label
+
+func _ready():
+	connect(\"mouse_entered\", self, \"GlowOn\")
+	connect(\"mouse_exited\", self, \"GlowOff\")
+
+func GlowOn():
+	self.modulate = Color(1.4, 1.4, 1.4, 1)
+
+func GlowOff():
+	self.modulate = Color(1.1, 1.1, 1.1, 1.1)
+	
+"
+
+[sub_resource type="StyleBoxFlat" id=29]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id=46]
+bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
+draw_center = false
+shadow_size = 3
+
+[sub_resource type="StyleBoxEmpty" id=34]
+
+[sub_resource type="StyleBoxFlat" id=47]
+bg_color = Color( 0.6, 0.6, 0.6, 0.156863 )
+draw_center = false
+shadow_size = 1
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="GDScript" id=50]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"BackToTitle\")
+
+func BackToTitle():
+	# Close connection? Let others know? 
+	# Return to menu
+	get_tree().network_peer = null
+	get_tree().change_scene(\"res://Scene/Title.tscn\")
+"
+
+[sub_resource type="StyleBoxFlat" id=48]
+draw_center = false
+shadow_size = 3
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=49]
+draw_center = false
+shadow_size = 1
+shadow_offset = Vector2( 1, 1 )
+
+[sub_resource type="GDScript" id=51]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"GoToGameScene\")
+	if not get_tree().is_network_server(): self.visible = false
+
+func GoToGameScene():
+	Game.rpc(\"ChangeScene\", 0)
+"
+
+[sub_resource type="Environment" id=11]
+background_mode = 4
+glow_enabled = true
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 52 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="BluSpySec" type="Button" parent="."]
+margin_right = 636.0
+margin_bottom = 104.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 18 )
+custom_styles/disabled = SubResource( 19 )
+custom_styles/normal = SubResource( 6 )
+script = SubResource( 53 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="BluSpySec"]
+modulate = Color( 1.1, 1.1, 1.1, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_colors/font_color = Color( 0.313726, 0.411765, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0.141176, 1, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 4 )
+text = "Blu Wordsmith"
+align = 1
+valign = 1
+script = SubResource( 57 )
+
+[node name="BluSpyVBox" type="VBoxContainer" parent="BluSpySec"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -290.0
+margin_right = 290.0
+mouse_filter = 2
+alignment = 1
+
+[node name="PlayerCard_B" parent="BluSpySec/BluSpyVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 12.0
+margin_right = 580.0
+margin_bottom = 92.0
+
+[node name="BluTeamSec" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -616.0
+margin_right = 636.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 12 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 18 )
+custom_styles/disabled = SubResource( 19 )
+custom_styles/normal = SubResource( 6 )
+script = SubResource( 54 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": true,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="BluTeamSec"]
+modulate = Color( 1.1, 1.1, 1.1, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_colors/font_color = Color( 0.313726, 0.411765, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0.141176, 1, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 4 )
+text = "Blu Team"
+align = 1
+valign = 1
+script = SubResource( 58 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="BluTeamVBox" type="VBoxContainer" parent="BluTeamSec"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -290.0
+margin_right = 290.0
+mouse_filter = 2
+
+[node name="PlayerCard_B" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_B2" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 84.0
+margin_right = 580.0
+margin_bottom = 164.0
+
+[node name="PlayerCard_B3" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 168.0
+margin_right = 580.0
+margin_bottom = 248.0
+
+[node name="PlayerCard_B4" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 252.0
+margin_right = 580.0
+margin_bottom = 332.0
+
+[node name="PlayerCard_B5" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 336.0
+margin_right = 580.0
+margin_bottom = 416.0
+
+[node name="PlayerCard_B6" parent="BluTeamSec/BluTeamVBox" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 420.0
+margin_right = 580.0
+margin_bottom = 500.0
+
+[node name="RedSpySec" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -636.0
+margin_bottom = 104.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 7 )
+custom_styles/hover = SubResource( 24 )
+custom_styles/pressed = SubResource( 24 )
+custom_styles/focus = SubResource( 22 )
+custom_styles/disabled = SubResource( 23 )
+custom_styles/normal = SubResource( 8 )
+script = SubResource( 55 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="RedSpySec"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_colors/font_color = Color( 1, 0.352941, 0.352941, 1 )
+custom_colors/font_color_shadow = Color( 0.607843, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 20 )
+text = "Red Wordsmith"
+align = 1
+valign = 1
+script = SubResource( 59 )
+
+[node name="RedSpyVBox" type="VBoxContainer" parent="RedSpySec"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -290.0
+margin_right = 290.0
+rect_min_size = Vector2( 580, 104 )
+mouse_filter = 2
+alignment = 1
+
+[node name="PlayerCard_R" parent="RedSpySec/RedSpyVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 12.0
+margin_right = 580.0
+margin_bottom = 92.0
+
+[node name="RedTeamSec" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -636.0
+margin_top = -616.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = SubResource( 9 )
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 26 )
+custom_styles/focus = SubResource( 27 )
+custom_styles/disabled = SubResource( 28 )
+custom_styles/normal = SubResource( 10 )
+script = SubResource( 56 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="RedTeamSec"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_colors/font_color = Color( 1, 0.352941, 0.352941, 1 )
+custom_colors/font_color_shadow = Color( 0.607843, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 21 )
+text = "Red Team"
+align = 1
+valign = 1
+script = SubResource( 60 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="RedTeamVBox" type="VBoxContainer" parent="RedTeamSec"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -290.0
+margin_right = 290.0
+rect_min_size = Vector2( 580, 616 )
+mouse_filter = 2
+
+[node name="PlayerCard_R" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_R2" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_R3" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_R4" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_R5" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="PlayerCard_R6" parent="RedTeamSec/RedTeamVBox" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 80.0
+
+[node name="Spectator" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -640.0
+margin_top = -40.0
+margin_right = 640.0
+rect_min_size = Vector2( 0, 40 )
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 43 )
+custom_styles/pressed = SubResource( 44 )
+custom_styles/focus = SubResource( 37 )
+custom_styles/disabled = SubResource( 38 )
+custom_styles/normal = SubResource( 45 )
+script = SubResource( 42 )
+
+[node name="SpecLabel" type="Label" parent="Spectator"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -92.0
+margin_top = -20.0
+margin_right = 92.0
+margin_bottom = 20.0
+custom_colors/font_color = Color( 0.415686, 0.407843, 0.407843, 1 )
+custom_colors/font_outline_modulate = Color( 0.470588, 0.470588, 0.470588, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 40 )
+custom_styles/normal = SubResource( 41 )
+text = "Spectators"
+align = 1
+valign = 1
+script = SubResource( 61 )
+
+[node name="SpectatorVBox" type="HBoxContainer" parent="Spectator"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="SpecCard" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 617.0
+margin_top = 9.0
+margin_right = 663.0
+margin_bottom = 30.0
+
+[node name="SpecCard2" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 317.0
+margin_top = 9.0
+margin_right = 363.0
+margin_bottom = 30.0
+
+[node name="SpecCard3" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 342.0
+margin_top = 9.0
+margin_right = 388.0
+margin_bottom = 30.0
+
+[node name="SpecCard4" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 367.0
+margin_top = 9.0
+margin_right = 413.0
+margin_bottom = 30.0
+
+[node name="SpecCard5" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 392.0
+margin_top = 9.0
+margin_right = 438.0
+margin_bottom = 30.0
+
+[node name="SpecCard6" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 417.0
+margin_top = 9.0
+margin_right = 463.0
+margin_bottom = 30.0
+
+[node name="SpecCard7" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 442.0
+margin_top = 9.0
+margin_right = 488.0
+margin_bottom = 30.0
+
+[node name="SpecCard8" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 467.0
+margin_top = 9.0
+margin_right = 513.0
+margin_bottom = 30.0
+
+[node name="SpecCard9" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 517.0
+margin_top = 9.0
+margin_right = 563.0
+margin_bottom = 30.0
+
+[node name="SpecCard10" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 542.0
+margin_top = 9.0
+margin_right = 588.0
+margin_bottom = 30.0
+
+[node name="SpecCard11" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 542.0
+margin_top = 9.0
+margin_right = 588.0
+margin_bottom = 30.0
+
+[node name="SpecCard12" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 567.0
+margin_top = 9.0
+margin_right = 613.0
+margin_bottom = 30.0
+
+[node name="SpecCard13" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 592.0
+margin_top = 9.0
+margin_right = 638.0
+margin_bottom = 30.0
+
+[node name="SpecCard14" parent="Spectator/SpectatorVBox" instance=ExtResource( 4 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 617.0
+margin_top = 9.0
+margin_right = 663.0
+margin_bottom = 30.0
+
+[node name="Panel" type="Panel" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -79.0
+margin_right = 238.0
+margin_bottom = -50.0
+custom_styles/panel = SubResource( 29 )
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Leave" type="Button" parent="Panel/VBoxContainer"]
+margin_right = 113.0
+margin_bottom = 29.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/hover = SubResource( 46 )
+custom_styles/focus = SubResource( 34 )
+custom_styles/normal = SubResource( 47 )
+text = "Leave Lobby"
+script = SubResource( 50 )
+
+[node name="Start" type="Button" parent="Panel/VBoxContainer"]
+margin_left = 117.0
+margin_right = 230.0
+margin_bottom = 29.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/hover = SubResource( 48 )
+custom_styles/focus = SubResource( 34 )
+custom_styles/normal = SubResource( 49 )
+text = "Start Game"
+script = SubResource( 51 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 11 )

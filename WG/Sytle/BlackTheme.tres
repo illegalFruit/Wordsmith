@@ -1,0 +1,44 @@
+[gd_resource type="Theme" load_steps=9 format=2]
+
+[ext_resource path="res://Fonts/8bitOperatorPlus8-Regular.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.133333, 0.137255, 0.156863, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="DynamicFont" id=7]
+size = 36
+outline_size = 1
+outline_color = Color( 0.54902, 0, 0, 1 )
+use_mipmaps = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.372549, 0.372549, 0.372549, 0 )
+shadow_color = Color( 0.772549, 0.0352941, 0.0352941, 0 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 36
+font_data = ExtResource( 1 )
+
+[resource]
+default_font = SubResource( 5 )
+Button/styles/disabled = SubResource( 8 )
+Button/styles/focus = SubResource( 9 )
+Button/styles/hover = SubResource( 10 )
+Button/styles/normal = SubResource( 11 )
+Button/styles/pressed = null
+Label/colors/font_color = Color( 0, 0, 0, 1 )
+Label/colors/font_color_shadow = Color( 0.380392, 0.027451, 0.027451, 1 )
+Label/fonts/font = SubResource( 7 )
+Label/styles/normal = SubResource( 6 )

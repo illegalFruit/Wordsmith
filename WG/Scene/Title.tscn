@@ -1,0 +1,683 @@
+[gd_scene load_steps=46 format=2]
+
+[ext_resource path="res://Scene/WordBtn.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sytle/Blur.tres" type="Material" id=2]
+[ext_resource path="res://Fonts/Betzmann.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Fonts/8bitOperatorPlus8-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="GDScript" id=14]
+script/source = "extends Control
+
+var words = [\"Water\", \"Razor\", \"Alphabet\", \"Technology\", \"Grass\",
+				\"Internet\", \"Love\", \"Fatality\", \"Beach\", \"City\",
+				\"Sand\", \"Dock\", \"Ethnicity\", \"Star\", \"Light\",
+				\"Keyboard\", \"Cold\", \"Sharp\", \"Smooth\", \"Peace\",
+				\"Invisibility\", \"Muscle\", \"Criminal\", \"Neutrality\", \"Country\",]
+var theme_blu = load(\"res://Sytle/BluTheme.tres\")
+var theme_red = load(\"res://Sytle/RedTheme.tres\")
+var theme_ylw = load(\"res://Sytle/YellowTheme.tres\")
+var theme_blk = load(\"res://Sytle/BlackTheme.tres\")
+var timer = Timer.new()
+var rng = RandomNumberGenerator.new()
+var childrens = []
+
+func _ready():
+	timer.connect(\"timeout\", self, \"RerollTheme\") 
+	
+	add_child(timer)
+	# Generate background 
+	childrens = get_node(\"GridContainer\").get_children()
+	for idx in range(childrens.size()):
+		childrens[idx].find_node(\"Label\").text = words[idx]
+		childrens[idx].set_theme(theme_ylw)
+	RerollTheme()
+	timer.start(2)
+
+func RerollTheme():
+	for child in childrens:
+		var rand_int = rng.randi_range(0, 9)
+		match rand_int:
+			0:
+				child.set_theme(theme_blk)
+			5:
+				child.set_theme(theme_ylw)
+			6,7:
+				child.set_theme(theme_blu)
+			8,9:
+				child.set_theme(theme_red)
+
+func SlideMenu(menu_code):
+	var menu = get_node(\"Panel\")
+	var menu2 = get_node(\"Panel2\")
+	match menu_code:
+		0:
+			menu.rect_position = Vector2(1446, 320)
+			menu2.rect_position = Vector2(439, 320)
+		1:
+			menu.rect_position = Vector2(439, 320)
+			menu2.rect_position = Vector2(1446, 320)
+"
+
+[sub_resource type="DynamicFont" id=1]
+size = 164
+outline_size = 5
+outline_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+use_mipmaps = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.831373, 0.831373, 0.831373, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="GDScript" id=17]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"HostBtnPressed\")
+
+func HostBtnPressed():
+	get_tree().change_scene(\"res://Scene/PreGame.tscn\")
+	Network.create_host()
+"
+
+[sub_resource type="DynamicFont" id=8]
+size = 60
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.831373, 0.831373, 0.831373, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+shadow_size = 2
+shadow_offset = Vector2( -1, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="GDScript" id=23]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", get_tree().current_scene, \"SlideMenu\", [0])
+"
+
+[sub_resource type="GDScript" id=16]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"QuitGame\")
+
+func QuitGame():
+	get_tree().quit()
+"
+
+[sub_resource type="StyleBoxFlat" id=18]
+
+[sub_resource type="DynamicFont" id=19]
+size = 50
+extra_spacing_top = -8
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=20]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="StyleBoxFlat" id=37]
+bg_color = Color( 1, 1, 1, 0 )
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id=38]
+bg_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+draw_center = false
+shadow_color = Color( 1, 1, 1, 0.392157 )
+
+[sub_resource type="StyleBoxEmpty" id=39]
+
+[sub_resource type="StyleBoxEmpty" id=40]
+
+[sub_resource type="GDScript" id=41]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"copy_code_to_clipboard\")
+
+func copy_code_to_clipboard():
+	var en = Marshalls.utf8_to_base64(Network.external_ip)
+	OS.clipboard = en
+	print(\"Copied to Clipboard: \", en)
+"
+
+[sub_resource type="StyleBoxFlat" id=36]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="DynamicFont" id=21]
+size = 36
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=22]
+bg_color = Color( 0.321569, 0.356863, 0.4, 1 )
+
+[sub_resource type="DynamicFont" id=24]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=25]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="StyleBoxFlat" id=26]
+bg_color = Color( 0.831373, 0.831373, 0.831373, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id=27]
+
+[sub_resource type="StyleBoxFlat" id=28]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="GDScript" id=29]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", get_tree().current_scene, \"SlideMenu\", [1])
+
+"
+
+[sub_resource type="DynamicFont" id=30]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="StyleBoxFlat" id=32]
+bg_color = Color( 0.831373, 0.831373, 0.831373, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id=33]
+
+[sub_resource type="StyleBoxFlat" id=34]
+bg_color = Color( 0.180392, 0.196078, 0.215686, 1 )
+
+[sub_resource type="GDScript" id=35]
+script/source = "extends Button
+
+func _ready():
+	connect(\"pressed\", self, \"JoinBtnPressed\")
+
+func JoinBtnPressed():
+	get_tree().change_scene(\"res://Scene/PreGame.tscn\")
+	Network.create_client()
+"
+
+[sub_resource type="Environment" id=15]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 14 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+columns = 5
+
+[node name="Margin" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 252.0
+margin_bottom = 140.0
+
+[node name="Margin2" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 256.0
+margin_right = 508.0
+margin_bottom = 140.0
+
+[node name="Margin3" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 512.0
+margin_right = 764.0
+margin_bottom = 140.0
+
+[node name="Margin4" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 768.0
+margin_right = 1020.0
+margin_bottom = 140.0
+
+[node name="Margin5" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1024.0
+margin_right = 1276.0
+margin_bottom = 140.0
+
+[node name="Margin6" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 144.0
+margin_right = 252.0
+margin_bottom = 284.0
+
+[node name="Margin7" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 256.0
+margin_top = 144.0
+margin_right = 508.0
+margin_bottom = 284.0
+
+[node name="Margin8" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 512.0
+margin_top = 144.0
+margin_right = 764.0
+margin_bottom = 284.0
+
+[node name="Margin9" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 768.0
+margin_top = 144.0
+margin_right = 1020.0
+margin_bottom = 284.0
+
+[node name="Margin10" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1024.0
+margin_top = 144.0
+margin_right = 1276.0
+margin_bottom = 284.0
+
+[node name="Margin11" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 288.0
+margin_right = 252.0
+margin_bottom = 428.0
+
+[node name="Margin12" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 256.0
+margin_top = 288.0
+margin_right = 508.0
+margin_bottom = 428.0
+
+[node name="Margin13" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 512.0
+margin_top = 288.0
+margin_right = 764.0
+margin_bottom = 428.0
+
+[node name="Margin14" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 768.0
+margin_top = 288.0
+margin_right = 1020.0
+margin_bottom = 428.0
+
+[node name="Margin15" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1024.0
+margin_top = 288.0
+margin_right = 1276.0
+margin_bottom = 428.0
+
+[node name="Margin16" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 432.0
+margin_right = 252.0
+margin_bottom = 572.0
+
+[node name="Margin17" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 256.0
+margin_top = 432.0
+margin_right = 508.0
+margin_bottom = 572.0
+
+[node name="Margin18" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 512.0
+margin_top = 432.0
+margin_right = 764.0
+margin_bottom = 572.0
+
+[node name="Margin19" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 768.0
+margin_top = 432.0
+margin_right = 1020.0
+margin_bottom = 572.0
+
+[node name="Margin20" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1024.0
+margin_top = 432.0
+margin_right = 1276.0
+margin_bottom = 572.0
+
+[node name="Margin21" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 576.0
+margin_right = 252.0
+margin_bottom = 716.0
+
+[node name="Margin22" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 256.0
+margin_top = 576.0
+margin_right = 508.0
+margin_bottom = 716.0
+
+[node name="Margin23" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 512.0
+margin_top = 576.0
+margin_right = 764.0
+margin_bottom = 716.0
+
+[node name="Margin24" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 768.0
+margin_top = 576.0
+margin_right = 1020.0
+margin_bottom = 716.0
+
+[node name="Margin25" parent="GridContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1024.0
+margin_top = 576.0
+margin_right = 1276.0
+margin_bottom = 716.0
+
+[node name="BlurRect" type="ColorRect" parent="."]
+material = ExtResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="Title" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -389.5
+margin_top = -346.5
+margin_right = 389.5
+margin_bottom = -141.5
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+custom_styles/normal = SubResource( 13 )
+text = "Wordsmith"
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -201.0
+margin_top = -40.0
+margin_right = 201.0
+margin_bottom = 184.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+margin_right = 402.0
+margin_bottom = 102.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HostBtn" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_right = 199.0
+margin_bottom = 102.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 4 )
+text = "Host"
+script = SubResource( 17 )
+
+[node name="JoinBtn" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_left = 203.0
+margin_right = 402.0
+margin_bottom = 102.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 8 )
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/focus = SubResource( 11 )
+custom_styles/normal = SubResource( 12 )
+text = "Join"
+script = SubResource( 23 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="OptionBtn" type="Button" parent="Panel/VBoxContainer"]
+margin_top = 106.0
+margin_right = 402.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 0, 64 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 4 )
+text = "Options"
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Exit" type="Button" parent="Panel/VBoxContainer"]
+margin_top = 174.0
+margin_right = 402.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 0, 50 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/normal = SubResource( 4 )
+text = "Exit"
+script = SubResource( 16 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Panel2" type="Panel" parent="."]
+margin_left = 1446.0
+margin_top = 320.0
+margin_right = 1848.0
+margin_bottom = 523.0
+rect_min_size = Vector2( 402, 0 )
+custom_styles/panel = SubResource( 18 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Panel2/VBoxContainer"]
+margin_right = 402.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 0, 40 )
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 19 )
+custom_styles/normal = SubResource( 20 )
+text = "Room Code:"
+align = 1
+valign = 1
+
+[node name="JoinCodeBtn" type="Button" parent="Panel2/VBoxContainer/Label"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -116.0
+margin_top = -20.0
+rect_min_size = Vector2( 90, 20 )
+mouse_default_cursor_shape = 2
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.117647, 0.458824, 0, 1 )
+custom_styles/hover = SubResource( 37 )
+custom_styles/pressed = SubResource( 38 )
+custom_styles/focus = SubResource( 39 )
+custom_styles/normal = SubResource( 40 )
+text = "[ My Join Code ]"
+script = SubResource( 41 )
+
+[node name="Panel" type="Panel" parent="Panel2/VBoxContainer"]
+margin_top = 79.0
+margin_right = 402.0
+margin_bottom = 149.0
+rect_min_size = Vector2( 0, 70 )
+custom_styles/panel = SubResource( 36 )
+
+[node name="IPInput" type="LineEdit" parent="Panel2/VBoxContainer/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -196.0
+margin_top = -25.0
+margin_right = 197.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 380, 50 )
+custom_fonts/font = SubResource( 21 )
+custom_styles/normal = SubResource( 22 )
+text = "47.156.105.55"
+align = 1
+caret_blink = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel2/VBoxContainer"]
+margin_top = 153.0
+margin_right = 402.0
+margin_bottom = 203.0
+
+[node name="Back" type="Button" parent="Panel2/VBoxContainer/HBoxContainer"]
+margin_right = 199.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 24 )
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 26 )
+custom_styles/focus = SubResource( 27 )
+custom_styles/normal = SubResource( 28 )
+text = "Back"
+script = SubResource( 29 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Join" type="Button" parent="Panel2/VBoxContainer/HBoxContainer"]
+margin_left = 203.0
+margin_right = 402.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.737255, 0.737255, 0.737255, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.192157, 0.192157, 0.192157, 1 )
+custom_fonts/font = SubResource( 30 )
+custom_styles/hover = SubResource( 31 )
+custom_styles/pressed = SubResource( 32 )
+custom_styles/focus = SubResource( 33 )
+custom_styles/normal = SubResource( 34 )
+text = "Join"
+script = SubResource( 35 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 15 )
